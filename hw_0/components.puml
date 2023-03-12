@@ -26,10 +26,10 @@ Rel(user, web_site, "Регистрация и поиск пользовател
 Rel(web_site, client_service, "Работа с пользователями", "localhost/person")
 Rel(client_service, db, "INSERT/SELECT/UPDATE", "SQL")
 
-Rel(web_site, wall_service, "Работа с записями на стене", "localhost/pres")
+Rel(web_site, wall_service, "Работа с записями на стене", "localhost/wall")
 Rel(wall_service, db, "INSERT/SELECT/UPDATE", "SQL")
 
-Rel(web_site, messngr_service, "Работа с сообщениями", "localhost/conf")
+Rel(web_site, messngr_service, "Работа с сообщениями", "localhost/messenger")
 Rel(messngr_service, db, "INSERT/SELECT/UPDATE", "SQL")
 
 @enduml
