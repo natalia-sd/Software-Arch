@@ -1,0 +1,35 @@
+@startuml comp
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+AddElementTag("microService", $shape=EightSidedShape(), $bgColor="MediumSeaGreen", $fontColor="white", $legendText="microservice")
+AddElementTag("storage", $shape=RoundedBoxShape(), $bgColor="LightGreen", $fontColor="white")
+AddElementTag("person", $bgColor="Teal", $fontColor="white")
+
+Person(admin, "Администратор")
+Person(moderator, "Модератор")
+Person(user, "Пользователь")
+
+System_Ext(web_site, "Клиентский веб-сайт", "HTML, CSS, JavaScript, React", "Веб-интерфейс")
+
+System_Boundary(conference_site, "Сайт социальной сети") {
+   Container(client_service, "Сервис авторизации", "C++", "Сервис управления пользователями", $tags = "microService")    
+   Container(wall_service, "Сервис личной странички (стены)", "C++", "Сервис управления записями на стене", $tags = "microService") 
+   Container(messngr_service, "Сервис Р2Р мессенджера", "C++", "Сервис управления сообщениями", $tags = "microService")   
+   ContainerDb(db, "База данных", "MySQL", "Хранение данных о пользователях, стене и переписках", $tags = "storage")
+   
+}
+
+Rel(admin, web_site, "Просмотр, добавление и редактирование информации о пользователях, записях на стене и сообщениях")
+Rel(moderator, web_site, "Модерация контента и пользователей")
+Rel(user, web_site, "Регистрация и поиск пользователей, просмотр и отправка сообщений, просмотр информации на стене, добавление записей на стену")
+
+Rel(web_site, client_service, "Работа с пользователями", "localhost/person")
+Rel(client_service, db, "INSERT/SELECT/UPDATE", "SQL")
+
+Rel(web_site, wall_service, "Работа с записями на стене", "localhost/pres")
+Rel(wall_service, db, "INSERT/SELECT/UPDATE", "SQL")
+
+Rel(web_site, messngr_service, "Работа с сообщениями", "localhost/conf")
+Rel(messngr_service, db, "INSERT/SELECT/UPDATE", "SQL")
+
+@enduml
