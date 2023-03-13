@@ -18,9 +18,10 @@ Person(user, "Пользователь")
 
 System_Ext(web_site, "Клиентский веб-сайт", "HTML, CSS, JavaScript, React", "Веб-интерфейс")
 
-System_Boundary(socialnet_site, "Сайт социальной сети") {
-   Container(client_service, "Сервис управления пользователями", "C++", "Сервис регистрации, авторизации, поиска пользователей", $tags = "microService")    
-   Container(wall_service, "Сервис личной странички (стены)", "C++", "Сервис управления записями на стене", $tags = "microService") 
+System_Boundary(socialnet_site, "Backend социальной сети") {
+   Container(auth_service, "Сервис авторизации", "C++", "Сервис входа на страничку", $tags = "microService")  
+   Container(client_service, "Сервис управления пользователями", "C++", "Сервис регистрации, авторизации, поиска пользователей", $tags = "microService")  
+   Container(wall_service, "Сервис личной странички (стены)", "C++", "Сервис просмотра и управления записями на стене", $tags = "microService") 
    Container(messngr_service, "Сервис Р2Р мессенджера", "C++", "Сервис управления сообщениями", $tags = "microService")   
    ContainerDb(db, "База данных", "MySQL", "Хранение данных о пользователях, записях и переписках", $tags = "storage")
    
@@ -28,17 +29,22 @@ System_Boundary(socialnet_site, "Сайт социальной сети") {
 
 Rel(admin, web_site, "Просмотр, добавление и редактирование информации о пользователях, записях на стене и сообщениях")
 Rel(moderator, web_site, "Модерация контента и пользователей")
-Rel(user, web_site, "Регистрация и поиск пользователей, просмотр и отправка сообщений, просмотр информации на стене, добавление записей на стену")
+Rel(user, web_site, "Регистрация, вход на страничку и поиск пользователей, просмотр и отправка сообщений, просмотр информации на стене, добавление записей на стену")
 
 
-client_service ..>> wall_service : [HTTPS, JSON]
+Rel(web_site, auth_service, "Работа с пользователями", "localhost/person")
+Rel(auth_service, client_service, "Работа с пользователями: регистрация или вход", "")
+client_service ..>> auth_service : Инфа о существовании пользователя и правильности входных данных, [JSON]
 
-Rel(web_site, client_service, "Работа с пользователями", "localhost/person")
+
+Rel(client_service, wall_service, "Работа с пользователями", "токен активной сессии, HTTP redirect 3XX")
 Rel(client_service, db, "INSERT/SELECT/UPDATE", "SQL")
+Rel_L(auth_service, error_service, "Работа с ошибками входа", "HTTP 403")
 
 
 Rel(web_site, wall_service, "Работа с записями на стене", "localhost/wall")
 Rel_D(wall_service, db, "INSERT/SELECT/UPDATE", "SQL")
+db ..>> client_service : [SQL]
 
 
 Rel(web_site, messngr_service, "Работа с сообщениями", "localhost/messenger")
@@ -49,14 +55,14 @@ Rel(messngr_service, db, "INSERT/SELECT/UPDATE", "SQL")
 ```
 ## Список компонентов  
 
-### Сервис авторизации
+### Сервис управления пользователями
 **API**:
 -	Создание нового пользователя
       - входные параметры: login, пароль, имя, фамилия, email, номер телефона, день рождения
       - выходные параметры: uuid
 - Авторизация на сайте
       - входные параметры:  login, пароль
-      - выходные параметры: uuid, имя, фамилия (по этим выходным параметрам, может перекидывать на стену, там такие же входные)
+      - выходные параметры: активная авторизационная сессия, uuid, имя, фамилия, ссылка на стену (через http 3XX), если пользователь не найден, то http 403
 -	Поиск пользователя по uuid
      - входные параметры:  uuid
      - выходные параметры: login, имя, фамилия, email, номер телефона день рождения
