@@ -1,5 +1,5 @@
-#ifndef HTTPMESSENGERSERVER_H
-#define HTTPMESSENGERSERVER_H
+#ifndef HTTPUSERSERVER_H
+#define HTTPUSERSERVER_H
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -38,16 +38,16 @@ using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
 #include "http_request_factory.h"
-#include "../database/messenger.h"
+#include "../database/user.h"
 
-class HTTPMessengerServer : public Poco::Util::ServerApplication
+class HTTPUserServer : public Poco::Util::ServerApplication
 {
 public:
-    HTTPMessengerServer() : _helpRequested(false)
+    HTTPUserServer() : _helpRequested(false)
     {
     }
 
-    ~HTTPMessengerServer()
+    ~HTTPUserServer()
     {
     }
 
@@ -67,8 +67,8 @@ protected:
     {
         if (!_helpRequested)
         {
-            database::Message::init();
-            ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8081));
+            database::User::init();
+            ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8080));
             HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
             srv.start();
             waitForTerminationRequest();
@@ -80,4 +80,4 @@ protected:
 private:
     bool _helpRequested;
 };
-#endif // !HTTPMESSENGERSERVER_H
+#endif // !HTTPUSERSERVER
