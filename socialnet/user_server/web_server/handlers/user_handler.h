@@ -44,7 +44,7 @@ using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
 #include "../../database/user.h"
-#include "../../helper.h"
+#include "../../../helper.h"
 
 static bool hasSubstr(const std::string &str, const std::string &substr)
 {
@@ -68,19 +68,19 @@ private:
     {
         if (name.length() < 3)
         {
-            reason = "Name must be at leas 3 signs";
+            reason = "Name must be at least 3 signs";
             return false;
         }
 
         if (name.find(' ') != std::string::npos)
         {
-            reason = "Name can't contain spaces";
+            reason = "Name should not contain spaces";
             return false;
         }
 
         if (name.find('\t') != std::string::npos)
         {
-            reason = "Name can't contain spaces";
+            reason = "Name should not contain spaces";
             return false;
         }
 
@@ -97,13 +97,13 @@ private:
 
         if (email.find(' ') != std::string::npos)
         {
-            reason = "EMail can't contain spaces";
+            reason = "Email should not contain spaces";
             return false;
         }
 
         if (email.find('\t') != std::string::npos)
         {
-            reason = "EMail can't contain spaces";
+            reason = "Email should not contain spaces";
             return false;
         }
 
