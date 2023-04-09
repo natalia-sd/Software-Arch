@@ -58,7 +58,7 @@ using Poco::Util::ServerApplication;
 #include "../../database/messenger.h"
 #include "../../../wall_server/database/wall.h"
 #include "../../../user_server/database/user.h"
-#include "../../../helper.h"
+#include "../../helper.h"
 
 static bool hasSubstr(const std::string &str, const std::string &substr)
 {
