@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 
 project(hl_server C CXX)
 
-SET (EXAMPLE_BINARY "wall_server")
+SET (EXAMPLE_BINARY "user_server")
 
 find_package(OpenSSL)
 find_package(Threads)
