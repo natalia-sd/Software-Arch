@@ -5,11 +5,11 @@ CREATE TABLE IF NOT EXISTS `User` (
   `first_name` VARCHAR(256) NOT NULL,
   `last_name` VARCHAR(256) NOT NULL,
   `login` VARCHAR(256) NOT NULL,
-  `pswd` VARCHAR(256) NOT NULL,
+  `password` VARCHAR(256) NOT NULL,
   `email` VARCHAR(256) NULL,
   `birthday` VARCHAR(256) NULL,
   PRIMARY KEY (`id`));
-  INSERT INTO User (first_name, last_name, login, pswd, email, birthday)
+  INSERT INTO User (first_name, last_name, login, password, email, birthday)
 VALUES ('Alice', 'Dalley', 'alicedal', '123456', 'alicedalley12@gmail.com', '13.08.1976'),
        ('Ben', 'Cintey', 'bennycinty', 'qwerty', 'bencint@gmail.com', '22.04.2000'),
        ('Cara', 'Brown', 'carbee', 'password', 'carabrown99@gmail.com', '31.12.1999'),
