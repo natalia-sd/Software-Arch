@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
     version: "1.0.0"
-    title: "Wals API"
-    description: Сервис стены юзера в социальной сети
+    title: "Wall API"
+    description: Сервис стены активного юзера в социальной сети
 servers:
     - url: http://localhost:8082
-      description: Сервер стен
+      description: Сервер стены
 
 paths:
     /show:
@@ -14,32 +14,32 @@ paths:
             parameters:
                 - name: user_id
                   in: query
-                  description: Идентификатор стены (пользователя)
+                  description: id стены (текущего пользователя)
                   required: true
                   schema:
                       type: integer
             responses:
                 '200':
-                    description: Список записей успешно получен
+                    description: Successfully loaded wall posts
                     content:
                      application/json:
                       schema:
                         $ref: '#/components/schemas/wall'   
                 404:
-                    description: Ошибка получения стены
+                    description: Error while loading wall posts
                     content:
                         application/json:
                          schema:
                             $ref: '#/components/schemas/Error'
                 500:
-                    description: Неожиданная ошибка
+                    description: Unexpected Error. Oops! Something went wrong! X/
                     content:
                         application/json:
                          schema:
                             $ref: '#/components/schemas/Error'   
     /wall:
         post:
-            summary: Добавление записи на стену пользователя
+            summary: Добавление новой записи на стену пользователя
             parameters:
                 - name: post_title
                   in: query
@@ -61,13 +61,13 @@ paths:
                          schema:
                           type: integer            
                 404:
-                    description: Ошибка с отправлением поста на стену
+                    description: Error while posting new wall post
                     content:
                         application/json:
                          schema:
                             $ref: '#/components/schemas/Error'
                 500:
-                    description: Неожиданная ошибка
+                    description: Unexpected Error. Oops! Something went wrong! X/
                     content:
                         application/json:
                          schema:
@@ -79,7 +79,7 @@ components:
     schemas:
         post_id:
             type: integer
-            description: Уникальный идентификатор стены        
+            description: Уникальный id стены        
         walls:
             type: array
             items:
@@ -103,7 +103,7 @@ components:
                 - message_error
             properties:
                 message_error:
-                    description: Сообщение об ошибке
+                    description: An Error Occured. Oops! Something went wrong! X/
                     type: string
     securitySchemes:
         basicAuth:

@@ -21,7 +21,7 @@ paths:
                   type: integer
             - name: text_message
               in: query
-              description: Содержание сообщения
+              description: Message contents. Message is created.
               required: true
               schema:
                   type: string
@@ -33,13 +33,13 @@ paths:
                   schema:
                     type: integer            
             404:
-             description: Ошибка отправки сообщения
+             description: Error while sending the message.
              content:
                 application/json:
                  schema:
                      $ref: '#/components/schemas/Error'
             500:
-             description: Неожиданная ошибка
+             description: Unexpected Error. Oops! Something went wrong! X/
              content:
                 application/json:
                  schema:
@@ -58,19 +58,19 @@ paths:
                   type: integer
         responses:
             "200": 
-                description: Переписка получена
+                description: Chat history is successfully loaded.
                 content:
                  application/json:
                   schema:
                     $ref: '#/components/schemas/message'
             404:
-             description: Ошибка получения истории чата (переписки)
+             description: Error while loading chat history.
              content:
                 application/json:
                  schema:
                      $ref: '#/components/schemas/Error'
             500:
-             description: Неожиданная ошибка
+             description: Unexpected Error. Oops! Something went wrong! X/
              content:
                 application/json:
                  schema:
@@ -80,7 +80,7 @@ components:
     schemas:
         message_id:
             type: integer
-            description: Уникальный идентификатор сообщения        
+            description: Уникальный id сообщения        
         messages:
             type: array
             items:
@@ -108,7 +108,7 @@ components:
                 - message_error
             properties:
                 message_error:
-                    description: Сообщение об ошибке
+                    description: An Error Occured. Oops! Something went wrong! X/
                     type: string
     securitySchemes:
         basicAuth:
