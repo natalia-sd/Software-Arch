@@ -260,7 +260,7 @@ services:
     networks:
       - snet-network
     depends_on:
-      user_service:
+      user_server:
         condition: service_started
 
 volumes:
