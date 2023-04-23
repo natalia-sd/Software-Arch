@@ -54,8 +54,9 @@ public:
     {
 
         std::cout << "request:" << request.getURI()<< std::endl;
-        if (hasSubstr(request.getURI(),"/wall")||
-            hasSubstr(request.getURI(),"/show")) 
+        if (hasSubstr(request.getURI(),"/wall") // ||
+            // hasSubstr(request.getURI(),"/show")
+            ) 
             return new WallHandler(_format);
         return 0;
     }

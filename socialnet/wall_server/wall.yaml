@@ -1,113 +1,113 @@
-openapi: "3.0.0"
-info:
-    version: "1.0.0"
-    title: "Wall API"
-    description: Сервис стены активного юзера в социальной сети
-servers:
-    - url: http://localhost:8082
-      description: Сервер стены
+# openapi: "3.0.0"
+# info:
+#     version: "1.0.0"
+#     title: "Wall API"
+#     description: Сервис стены активного юзера в социальной сети
+# servers:
+#     - url: http://localhost:8082
+#       description: Сервер стены
 
-paths:
-    /show:
-        get:
-            summary: Получение списка записей на стене пользователя
-            parameters:
-                - name: user_id
-                  in: query
-                  description: id стены (текущего пользователя)
-                  required: true
-                  schema:
-                      type: integer
-            responses:
-                '200':
-                    description: Successfully loaded wall posts
-                    content:
-                     application/json:
-                      schema:
-                        $ref: '#/components/schemas/wall'   
-                404:
-                    description: Error while loading wall posts
-                    content:
-                        application/json:
-                         schema:
-                            $ref: '#/components/schemas/Error'
-                500:
-                    description: Unexpected Error. Oops! Something went wrong! X/
-                    content:
-                        application/json:
-                         schema:
-                            $ref: '#/components/schemas/Error'   
-    /wall:
-        post:
-            summary: Добавление новой записи на стену пользователя
-            parameters:
-                - name: post_title
-                  in: query
-                  description: Заголовок поста
-                  required: true
-                  schema:
-                      type: string
-                - name: post_text
-                  in: query
-                  description: Содержание поста
-                  required: true
-                  schema:
-                      type: string                      
-            responses:
-                "200":
-                    description: id поста
-                    content:
-                        application/json:
-                         schema:
-                          type: integer            
-                404:
-                    description: Error while posting new wall post
-                    content:
-                        application/json:
-                         schema:
-                            $ref: '#/components/schemas/Error'
-                500:
-                    description: Unexpected Error. Oops! Something went wrong! X/
-                    content:
-                        application/json:
-                         schema:
-                            $ref: '#/components/schemas/Error'
+# paths:
+#     /show:
+#         get:
+#             summary: Получение списка записей на стене пользователя
+#             parameters:
+#                 - name: user_id
+#                   in: query
+#                   description: id стены (текущего пользователя)
+#                   required: true
+#                   schema:
+#                       type: integer
+#             responses:
+#                 '200':
+#                     description: Successfully loaded wall posts
+#                     content:
+#                      application/json:
+#                       schema:
+#                         $ref: '#/components/schemas/wall'   
+#                 404:
+#                     description: Error while loading wall posts
+#                     content:
+#                         application/json:
+#                          schema:
+#                             $ref: '#/components/schemas/Error'
+#                 500:
+#                     description: Unexpected Error. Oops! Something went wrong! X/
+#                     content:
+#                         application/json:
+#                          schema:
+#                             $ref: '#/components/schemas/Error'   
+#     /wall:
+#         post:
+#             summary: Добавление новой записи на стену пользователя
+#             parameters:
+#                 - name: post_title
+#                   in: query
+#                   description: Заголовок поста
+#                   required: true
+#                   schema:
+#                       type: string
+#                 - name: post_text
+#                   in: query
+#                   description: Содержание поста
+#                   required: true
+#                   schema:
+#                       type: string                      
+#             responses:
+#                 "200":
+#                     description: id поста
+#                     content:
+#                         application/json:
+#                          schema:
+#                           type: integer            
+#                 404:
+#                     description: Error while posting new wall post
+#                     content:
+#                         application/json:
+#                          schema:
+#                             $ref: '#/components/schemas/Error'
+#                 500:
+#                     description: Unexpected Error. Oops! Something went wrong! X/
+#                     content:
+#                         application/json:
+#                          schema:
+#                             $ref: '#/components/schemas/Error'
 
                   
 
-components:
-    schemas:
-        post_id:
-            type: integer
-            description: Уникальный id стены        
-        walls:
-            type: array
-            items:
-                $ref: "#/components/schemas/wall"
-        wall:
-            type: object
-            required:
-                - id
-                - user_id
-                - post_text
-            properties:
-             id:
-                 $ref: '#/components/schemas/post_id'   
-             user_id:
-                 type: integer
-             post_text:
-                 type: string
-        Error:
-            type: object
-            required:
-                - message_error
-            properties:
-                message_error:
-                    description: An Error Occured. Oops! Something went wrong! X/
-                    type: string
-    securitySchemes:
-        basicAuth:
-            type: http
-            scheme: basic
-security:
-    - basicAuth: []
+# components:
+#     schemas:
+#         post_id:
+#             type: integer
+#             description: Уникальный id стены        
+#         walls:
+#             type: array
+#             items:
+#                 $ref: "#/components/schemas/wall"
+#         wall:
+#             type: object
+#             required:
+#                 - id
+#                 - user_id
+#                 - post_text
+#             properties:
+#              id:
+#                  $ref: '#/components/schemas/post_id'   
+#              user_id:
+#                  type: integer
+#              post_text:
+#                  type: string
+#         Error:
+#             type: object
+#             required:
+#                 - message_error
+#             properties:
+#                 message_error:
+#                     description: An Error Occured. Oops! Something went wrong! X/
+#                     type: string
+#     securitySchemes:
+#         basicAuth:
+#             type: http
+#             scheme: basic
+# security:
+#     - basicAuth: []
