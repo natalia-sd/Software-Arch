@@ -266,6 +266,7 @@ services:
 volumes:
   snetdb-node-1-data:
   snetdb-node-2-data:
+  snetdb-node-3-data:
   proxysql-data:
 
 networks:
