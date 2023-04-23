@@ -174,7 +174,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /messenger:
+  /message:
     get:
       summary: Получение списка сообщений между пользователями
       description: Метод возвращает сообщения для указанных пользователей

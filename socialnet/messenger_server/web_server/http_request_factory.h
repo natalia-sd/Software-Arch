@@ -54,7 +54,7 @@ public:
     {
 
         std::cout << "request:" << request.getURI()<< std::endl;
-        if (hasSubstr(request.getURI(),"/messenger") // ||
+        if (hasSubstr(request.getURI(),"/message") // ||
             // hasSubstr(request.getURI(),"/search")
             ) 
             return new MessengerHandler(_format);
