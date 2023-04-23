@@ -1,4 +1,4 @@
-use archdb; 
+use snetdb; 
 show tables;
 CREATE TABLE IF NOT EXISTS `User` (
   `id` INT NOT NULL AUTO_INCREMENT,
