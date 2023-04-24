@@ -280,7 +280,7 @@ version: '3.3'
 services:
   snetdb-node-1:
     build:
-      context: mysql
+      context: mariadb
       dockerfile: Dockerfile
     container_name: snetdb-node-1
     restart: unless-stopped
@@ -302,7 +302,7 @@ services:
 
   snetdb-node-2:
     build:
-      context: mysql
+      context: mariadb
       dockerfile: Dockerfile
     container_name: snetdb-node-2
     restart: unless-stopped
@@ -324,7 +324,7 @@ services:
 
   snetdb-node-3:
     build:
-      context: mysql
+      context: mariadb
       dockerfile: Dockerfile
     container_name: snetdb-node-3
     restart: unless-stopped
