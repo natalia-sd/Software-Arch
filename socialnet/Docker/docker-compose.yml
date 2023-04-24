@@ -94,193 +94,12 @@
 #     driver: "bridge"
 #     external: false
 
-version: '3.3' #'2.1'
-
-services:
-  snetdb-node-1:
-    build:
-      context: mariadb
-      dockerfile: Dockerfile
-    container_name: snetdb-node-1
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: snetdb
-      MYSQL_USER: snetuser
-      MYSQL_PASSWORD: snetuser
-      MYSQL_ROOT_PASSWORD: '1'
-    command: >
-      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-      --general-log=ON
-      --log-queries-not-using-indexes=ON
-    networks:
-      - snet-network
-    ports:
-      - 3360:3306
-    healthcheck:
-      test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 10
-    volumes:
-      - snetdb-node-1-data:/var/lib/mysql
-
-  snetdb-node-2:
-    build:
-      context: mariadb
-      dockerfile: Dockerfile
-    container_name: snetdb-node-2
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: snetdb
-      MYSQL_USER: snetuser
-      MYSQL_PASSWORD: snetuser
-      MYSQL_ROOT_PASSWORD: '1'
-    command: >
-      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-      --general-log=ON
-      --log-queries-not-using-indexes=ON
-    networks:
-      - snet-network
-    ports:
-      - 3361:3306
-    healthcheck:
-      test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 10
-    volumes:
-      - snetdb-node-2-data:/var/lib/mysql
-  
-  snetdb-node-3:
-    build:
-      context: mariadb
-      dockerfile: Dockerfile
-    container_name: snetdb-node-3
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: snetdb
-      MYSQL_USER: snetuser
-      MYSQL_PASSWORD: snetuser
-      MYSQL_ROOT_PASSWORD: '1'
-    command: >
-      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-      --general-log=ON
-      --log-queries-not-using-indexes=ON
-    networks:
-      - snet-network
-    ports:
-      - 3361:3306
-    healthcheck:
-      test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 10
-    volumes:
-      - snetdb-node-3-data:/var/lib/mysql
-
-  proxysql:
-    build:
-      context: proxysql
-      dockerfile: Dockerfile
-    container_name: proxysql
-    command: >
-      --initial
-    volumes:
-      - proxysql-data:/var/lib/proxysql
-    healthcheck:
-      test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 10
-    networks:
-      - snet-network
-    ports:
-      - "6033:6033"
-      - "6032:6032"
-    depends_on:
-      snetdb-node-1:
-        condition: service_healthy
-      snetdb-node-2:
-        condition: service_healthy
-      snetdb-node-3:
-        condition: service_healthy
-
-  user_server:
-    build:
-      context: user_server
-      dockerfile: Dockerfile
-    container_name: user_server
-    restart: unless-stopped
-    environment:
-      - DB_HOST=proxysql
-      - DB_PORT=6033
-      - DB_LOGIN=snetuser
-      - DB_PASSWORD=snetuser
-      - DB_DATABASE=snetdb
-    ports:
-      - 8080:8080
-    networks:
-      - snet-network
-    depends_on:
-      proxysql:
-        condition: service_started
-    
-  messenger_server:
-    build:
-      context: messenger_server
-      dockerfile: Dockerfile
-    container_name: messenger_server
-    restart: unless-stopped
-    environment:
-      - SERVICE_HOST=user_server
-      - DB_HOST=proxysql
-      - DB_PORT=6033
-      - DB_LOGIN=snetuser
-      - DB_PASSWORD=snetuser
-      - DB_DATABASE=snetdb
-    ports:
-      - 8081:8081
-    networks:
-      - snet-network
-    depends_on:
-      user_server:
-        condition: service_started
-
-  wall_server:
-    build:
-      context: wall_server
-      dockerfile: Dockerfile
-    container_name: wall_server
-    restart: unless-stopped
-    environment:
-      - SERVICE_HOST=user_server
-      - DB_HOST=proxysql
-      - DB_PORT=6033
-      - DB_LOGIN=snetuser
-      - DB_PASSWORD=snetuser
-      - DB_DATABASE=snetdb
-    ports:
-      - 8082:8082
-    networks:
-      - snet-network
-    depends_on:
-      user_server:
-        condition: service_started
-
-volumes:
-  snetdb-node-1-data:
-  snetdb-node-2-data:
-  snetdb-node-3-data:
-  proxysql-data:
-
-networks:
-  snet-network:
-    driver: "bridge"
-    external: false
-
-
-# version: '3.3'
+# version: '3.3' #'2.1'
 
 # services:
 #   snetdb-node-1:
 #     build:
-#       context: mysql
+#       context: mariadb
 #       dockerfile: Dockerfile
 #     container_name: snetdb-node-1
 #     restart: unless-stopped
@@ -297,12 +116,16 @@ networks:
 #       - snet-network
 #     ports:
 #       - 3360:3306
+#     healthcheck:
+#       test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
+#       timeout: 20s
+#       retries: 10
 #     volumes:
 #       - snetdb-node-1-data:/var/lib/mysql
 
 #   snetdb-node-2:
 #     build:
-#       context: mysql
+#       context: mariadb
 #       dockerfile: Dockerfile
 #     container_name: snetdb-node-2
 #     restart: unless-stopped
@@ -319,12 +142,16 @@ networks:
 #       - snet-network
 #     ports:
 #       - 3361:3306
+#     healthcheck:
+#       test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
+#       timeout: 20s
+#       retries: 10
 #     volumes:
 #       - snetdb-node-2-data:/var/lib/mysql
-
+  
 #   snetdb-node-3:
 #     build:
-#       context: mysql
+#       context: mariadb
 #       dockerfile: Dockerfile
 #     container_name: snetdb-node-3
 #     restart: unless-stopped
@@ -340,10 +167,14 @@ networks:
 #     networks:
 #       - snet-network
 #     ports:
-#       - 3362:3306
+#       - 3361:3306
+#     healthcheck:
+#       test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
+#       timeout: 20s
+#       retries: 10
 #     volumes:
 #       - snetdb-node-3-data:/var/lib/mysql
-      
+
 #   proxysql:
 #     build:
 #       context: proxysql
@@ -356,25 +187,26 @@ networks:
 #     healthcheck:
 #       test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
 #       timeout: 20s
-#       retries: 5
-#     depends_on:
-#       - snetdb-node-1
-#       - snetdb-node-2
-#       - snetdb-node-3
-      
+#       retries: 10
 #     networks:
 #       - snet-network
 #     ports:
-#       # Mysql Client Port
 #       - "6033:6033"
-#       # Mysql Admin Port
 #       - "6032:6032"
+#     depends_on:
+#       snetdb-node-1:
+#         condition: service_healthy
+#       snetdb-node-2:
+#         condition: service_healthy
+#       snetdb-node-3:
+#         condition: service_healthy
 
 #   user_server:
 #     build:
 #       context: user_server
 #       dockerfile: Dockerfile
 #     container_name: user_server
+#     restart: unless-stopped
 #     environment:
 #       - DB_HOST=proxysql
 #       - DB_PORT=6033
@@ -386,12 +218,50 @@ networks:
 #     networks:
 #       - snet-network
 #     depends_on:
-#       - proxysql
-#       - snetdb-node-1
-#       - snetdb-node-2
-#       - snetdb-node-3
-#       # proxysql:
-#       #   condition: service_healthy
+#       proxysql:
+#         condition: service_started
+    
+#   messenger_server:
+#     build:
+#       context: messenger_server
+#       dockerfile: Dockerfile
+#     container_name: messenger_server
+#     restart: unless-stopped
+#     environment:
+#       - SERVICE_HOST=user_server
+#       - DB_HOST=proxysql
+#       - DB_PORT=6033
+#       - DB_LOGIN=snetuser
+#       - DB_PASSWORD=snetuser
+#       - DB_DATABASE=snetdb
+#     ports:
+#       - 8081:8081
+#     networks:
+#       - snet-network
+#     depends_on:
+#       user_server:
+#         condition: service_started
+
+#   wall_server:
+#     build:
+#       context: wall_server
+#       dockerfile: Dockerfile
+#     container_name: wall_server
+#     restart: unless-stopped
+#     environment:
+#       - SERVICE_HOST=user_server
+#       - DB_HOST=proxysql
+#       - DB_PORT=6033
+#       - DB_LOGIN=snetuser
+#       - DB_PASSWORD=snetuser
+#       - DB_DATABASE=snetdb
+#     ports:
+#       - 8082:8082
+#     networks:
+#       - snet-network
+#     depends_on:
+#       user_server:
+#         condition: service_started
 
 # volumes:
 #   snetdb-node-1-data:
@@ -403,3 +273,133 @@ networks:
 #   snet-network:
 #     driver: "bridge"
 #     external: false
+
+
+version: '3.3'
+
+services:
+  snetdb-node-1:
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    container_name: snetdb-node-1
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: snetdb
+      MYSQL_USER: snetuser
+      MYSQL_PASSWORD: snetuser
+      MYSQL_ROOT_PASSWORD: '1'
+    command: >
+      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+      --general-log=ON
+      --log-queries-not-using-indexes=ON
+    networks:
+      - snet-network
+    ports:
+      - 3360:3306
+    volumes:
+      - snetdb-node-1-data:/var/lib/mysql
+
+  snetdb-node-2:
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    container_name: snetdb-node-2
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: snetdb
+      MYSQL_USER: snetuser
+      MYSQL_PASSWORD: snetuser
+      MYSQL_ROOT_PASSWORD: '1'
+    command: >
+      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+      --general-log=ON
+      --log-queries-not-using-indexes=ON
+    networks:
+      - snet-network
+    ports:
+      - 3361:3306
+    volumes:
+      - snetdb-node-2-data:/var/lib/mysql
+
+  snetdb-node-3:
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    container_name: snetdb-node-3
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: snetdb
+      MYSQL_USER: snetuser
+      MYSQL_PASSWORD: snetuser
+      MYSQL_ROOT_PASSWORD: '1'
+    command: >
+      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+      --general-log=ON
+      --log-queries-not-using-indexes=ON
+    networks:
+      - snet-network
+    ports:
+      - 3362:3306
+    volumes:
+      - snetdb-node-3-data:/var/lib/mysql
+      
+  proxysql:
+    build:
+      context: proxysql
+      dockerfile: Dockerfile
+    container_name: proxysql
+    command: >
+      --initial
+    volumes:
+      - proxysql-data:/var/lib/proxysql
+    healthcheck:
+      test: "/usr/bin/mysql --user=snetuser --password=snetuser --execute \"SHOW DATABASES;\""
+      timeout: 20s
+      retries: 5
+    depends_on:
+      - snetdb-node-1
+      - snetdb-node-2
+      - snetdb-node-3
+      
+    networks:
+      - snet-network
+    ports:
+      # Mysql Client Port
+      - "6033:6033"
+      # Mysql Admin Port
+      - "6032:6032"
+
+  social_network:
+    build:
+      context: social_network
+      dockerfile: Dockerfile
+    container_name: social_network
+    environment:
+      - DB_HOST=proxysql
+      - DB_PORT=6033
+      - DB_LOGIN=snetuser
+      - DB_PASSWORD=snetuser
+      - DB_DATABASE=snetdb
+    ports:
+      - 8080:8080
+    networks:
+      - snet-network
+    depends_on:
+      - proxysql
+      - snetdb-node-1
+      - snetdb-node-2
+      - snetdb-node-3
+      # proxysql:
+      #   condition: service_healthy
+
+volumes:
+  snetdb-node-1-data:
+  snetdb-node-2-data:
+  snetdb-node-3-data:
+  proxysql-data:
+
+networks:
+  snet-network:
+    driver: "bridge"
+    external: false
