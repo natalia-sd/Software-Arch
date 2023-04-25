@@ -21,16 +21,26 @@ include_directories(${Poco_INCLUDE_DIRS})
 
 add_executable(${EXAMPLE_BINARY} main.cpp 
                                  user_server/config/config.cpp 
+                                 data_cache/cache.cpp
                                  user_server/database/database.cpp
                                  user_server/database/user.cpp
                                  messenger_server/database/messenger.cpp
                                  wall_server/database/wall.cpp)
+
+add_executable(load_data load_data.cpp)
 
 
 target_include_directories(${EXAMPLE_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
 target_compile_options(${EXAMPLE_BINARY} PRIVATE -Wall -Wextra -pedantic -Werror )
 
 target_link_libraries(${EXAMPLE_BINARY} PRIVATE 
+                             ${CMAKE_THREAD_LIBS_INIT} 
+                             ${Poco_LIBRARIES}
+                             "PocoData"
+                             "PocoDataMySQL"                      
+                             ZLIB::ZLIB)
+
+target_link_libraries(load_data PRIVATE 
                              ${CMAKE_THREAD_LIBS_INIT} 
                              ${Poco_LIBRARIES}
                              "PocoData"

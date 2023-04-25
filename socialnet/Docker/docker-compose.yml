@@ -369,6 +369,16 @@ services:
       - "6033:6033"
       # Mysql Admin Port
       - "6032:6032"
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning 
+    networks:
+      - snet-network
+    volumes: 
+      - cache:/data
 
   social_network:
     build:
@@ -381,12 +391,14 @@ services:
       - DB_LOGIN=snetuser
       - DB_PASSWORD=snetuser
       - DB_DATABASE=snetdb
+      - CACHE=cache:6379
     ports:
       - 8080:8080
     networks:
       - snet-network
     depends_on:
       - proxysql
+      - cache
       - snetdb-node-1
       - snetdb-node-2
       - snetdb-node-3
@@ -398,6 +410,7 @@ volumes:
   snetdb-node-2-data:
   snetdb-node-3-data:
   proxysql-data:
+  cache:
 
 networks:
   snet-network:

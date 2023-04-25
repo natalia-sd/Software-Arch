@@ -71,6 +71,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /search_by_id:
+    get:
+      summary: Поиск пользователя по id
+      parameters:
+      - name: id
+        description: id
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/user_id'     
+      responses:
+        '200':
+          description: Found users for the provided id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+        404:
+          description: No users found for the provided mask
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Unexpected Error. Oops! Something went wrong! X/
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /auth:
     get:
       summary: Проверка авторизации (аутентификации)
