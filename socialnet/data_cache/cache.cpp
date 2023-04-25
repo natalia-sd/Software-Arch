@@ -1,5 +1,5 @@
 #include "cache.h"
-#include "../config/config.h"
+#include "../user_server/config/config.h"
 
 #include <exception>
 #include <mutex>
