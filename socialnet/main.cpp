@@ -66,7 +66,7 @@ public:
         if (hasSubstr(request.getURI(), "/wall"))
             return new WallHandler(_format);
         
-        return new WebIFHandler(_format);
+        return new WebPageHandler(_format);
     }
 
 private:

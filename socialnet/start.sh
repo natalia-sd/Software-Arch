@@ -7,4 +7,4 @@ export CACHE=127.0.0.1:6379
 
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
-./build/Software-Arch/socialnet
+./tmpbuild/load_data

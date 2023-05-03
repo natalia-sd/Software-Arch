@@ -790,10 +790,11 @@ namespace database
 
             std::string select_str = "INSERT INTO User (total_id, first_name, last_name, email, birthday, login, password) VALUES(?, ?, ?, ?,?, ?, ?) ";
             select_str += sharding_hint;
-            std::cout << select_str << std::endl;
+            std::cout << "!!!" << select_str << std::endl;
 
             Poco::Data::Statement insert(session);
 
+            
             insert << select_str,
                 use(db_len),
                 use(_first_name),

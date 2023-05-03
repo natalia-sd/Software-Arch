@@ -71,10 +71,11 @@ auto main() -> int
             long total_id = object->getValue<long>("total_id");
             std::string first_name = object->getValue<std::string>("first_name");
             std::string last_name = object->getValue<std::string>("last_name");
+            std::string login = object->getValue<std::string>("login");
+            std::string password = object->getValue<std::string>("password");
             std::string birthday = object->getValue<std::string>("birthday");
             std::string email = object->getValue<std::string>("email");
-            std::string login = email;
-            std::string password;
+            // std::string password;
 
             std::string key;
             key += std::to_string(total_id);
@@ -101,7 +102,7 @@ auto main() -> int
             if(i%100==0) std::cout << ".";
         }
 
-        std::cout << "Inserted " << i << " records" << std::endl; 
+        std::cout << "Inserted " << i << " records" << std::endl;
        
     }
     catch (Poco::Data::MySQL::ConnectionException &e)

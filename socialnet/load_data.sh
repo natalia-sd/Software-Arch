@@ -4,4 +4,4 @@ export DB_LOGIN=snetuser
 export DB_PASSWORD=snetuser
 export DB_DATABASE=snetdb
 
-./build/load_data
+./tmpbuild/load_data

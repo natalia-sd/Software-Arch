@@ -379,11 +379,37 @@ services:
       - snet-network
     volumes: 
       - cache:/data
+      - proxysql-data
+
+  # social_network:
+  #   build:
+  #     context: social_network
+  #     dockerfile: Dockerfile
+  #   container_name: social_network
+  #   environment:
+  #     - DB_HOST=proxysql
+  #     - DB_PORT=6033
+  #     - DB_LOGIN=snetuser
+  #     - DB_PASSWORD=snetuser
+  #     - DB_DATABASE=snetdb
+  #     - CACHE=cache:6379
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - snet-network
+  #   depends_on:
+  #     - proxysql
+  #     - cache
+  #     - snetdb-node-1
+  #     - snetdb-node-2
+  #     - snetdb-node-3
+  #     # proxysql:
+  #     #   condition: service_healthy
 
   social_network:
     build:
-      context: social_network
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: Docker/social_network/Dockerfile
     container_name: social_network
     environment:
       - DB_HOST=proxysql

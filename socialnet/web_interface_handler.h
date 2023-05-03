@@ -40,10 +40,10 @@ using Poco::Util::OptionSet;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
 
-class WebIFHandler: public HTTPRequestHandler
+class WebPageHandler: public HTTPRequestHandler
 {
 public:
-    WebIFHandler(const std::string& format): _format(format)
+    WebPageHandler(const std::string& format): _format(format)
     {
     }
 
@@ -79,4 +79,4 @@ public:
 private:
     std::string _format;
 };
-#endif // !WEBINTERFACEHANDLER_H
+#endif // !WEBPAGEHANDLER_H
