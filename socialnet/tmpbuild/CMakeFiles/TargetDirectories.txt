@@ -1,0 +1,4 @@
+/Software-Arch/socialnet/tmpbuild/CMakeFiles/socialnet.dir
+/Software-Arch/socialnet/tmpbuild/CMakeFiles/load_data.dir
+/Software-Arch/socialnet/tmpbuild/CMakeFiles/edit_cache.dir
+/Software-Arch/socialnet/tmpbuild/CMakeFiles/rebuild_cache.dir
